@@ -21,8 +21,9 @@ constructor(private http: HttpClient) {}
 
 
     fetchPost () {
-        this.http.get<{[key: string]: Post }>('https://ng-complete-guide-947e0-default-rtdb.firebaseio.com/posts.json')
-        .pipe(map(responseData => {
+        return this.http.get<{[key: string]: Post }>('https://ng-complete-guide-947e0-default-rtdb.firebaseio.com/posts.json')
+        .pipe(
+          map(responseData => {
           const postsArray: Post[] = [];
           for (const key in responseData) {
             if (responseData.hasOwnProperty(key)) {
@@ -31,9 +32,7 @@ constructor(private http: HttpClient) {}
           }
           return postsArray;
         })
-      )
-        .subscribe(posts => {
-          
-        });
+      );
+        
     }
 }
