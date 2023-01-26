@@ -35,4 +35,8 @@ constructor(private http: HttpClient) {}
       );
         
     }
+
+    deletePosts() {
+      return this.http.delete('https://ng-complete-guide-947e0-default-rtdb.firebaseio.com/posts.json');
+    }
 }
