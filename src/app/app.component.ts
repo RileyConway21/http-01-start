@@ -29,8 +29,8 @@ this.errorSub = this.postsService.error.subscribe(errorMessage => {
       this.isFetching = false; 
       this.loadedPosts = posts;
     }, error => {
+this.isFetching = false; 
       this.error = error.message;
-      console.log(error);
   });
 }
 
@@ -46,7 +46,9 @@ this.errorSub = this.postsService.error.subscribe(errorMessage => {
       this.isFetching = false; 
       this.loadedPosts = posts;
     }, error => {
+      this.isFetching = false;
 this.error = error.message;
+console.log(error);
     });
   }
 
@@ -56,6 +58,12 @@ this.error = error.message;
       this.loadedPosts = [];
     });
   }
+
+onHandleError() {
+  this.error = null;
+}
+
+
 ngOnDestroy() {
   this.errorSub.unsubscribe();
 }
