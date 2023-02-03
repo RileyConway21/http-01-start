@@ -31,7 +31,8 @@ this.errorSub = this.postsService.error.subscribe(errorMessage => {
     }, error => {
 this.isFetching = false; 
       this.error = error.message;
-  });
+  }
+  );
 }
 
   onCreatePost(postData: Post) {
