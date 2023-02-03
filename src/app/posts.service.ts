@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpEventType, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Subject, throwError } from "rxjs";
-import { catchError, map } from 'rxjs/operators';
+import { MonoTypeOperatorFunction, Subject, throwError } from "rxjs";
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { Post } from './post.model';
 
@@ -16,11 +16,14 @@ constructor(private http: HttpClient) {}
         this.http
         .post<{name: string}>(
           'https://ng-complete-guide-947e0-default-rtdb.firebaseio.com/posts.json',
-          postData
+          postData,
+          {
+            observe: 'response'
+          }
         )
         .subscribe(
           responseData => {
-          console.log(responseData)
+          console.log(responseData.body)
         }, error => {
           this.error.next(error.message);
         });    }
@@ -28,7 +31,7 @@ constructor(private http: HttpClient) {}
 
     fetchPost () {
       let searchParams = new HttpParams();
-      searchParams =searchParams.('print', 'pretty');
+      searchParams =searchParams.append('print', 'pretty');
       searchParams = searchParams.append('custom', 'key');
         return this.http.get<{[key: string]: Post }>('https://ng-complete-guide-947e0-default-rtdb.firebaseio.com/posts.json',
         {
@@ -50,11 +53,29 @@ params: searchParams
 // Send to analytics server
           return throwError(errorRes);
         })
-      );
+    
         
     }
 
     deletePosts() {
       return this.http.delete('https://ng-complete-guide-947e0-default-rtdb.firebaseio.com/posts.json');
+      {
+        observe: 'events'
+      }
+      pipe(
+        tap(event=>{
+          console.log(event);
+          if (event.type === HttpEventType.Sent) {
+            // ...
+          }
+          if (event.type === HttpEventType) {
+            console.log(event.body);
+          }
+        })
+      )
     }
+}
+
+function pipe(arg0: MonoTypeOperatorFunction<unknown>) {
+  throw new Error("Function not implemented.");
 }
