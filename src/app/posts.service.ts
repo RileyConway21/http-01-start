@@ -37,6 +37,7 @@ constructor(private http: HttpClient) {}
         {
 headers: new HttpHeaders({"Custom-Header": 'Hello'}),
 params: searchParams
+responseType: 'text'
         }
         )
         .pipe(
@@ -60,18 +61,19 @@ params: searchParams
     deletePosts() {
       return this.http.delete('https://ng-complete-guide-947e0-default-rtdb.firebaseio.com/posts.json');
       {
-        observe: 'events'
+        observe: 'events',
       }
       pipe(
         tap(event=>{
           console.log(event);
-          if (event.type === HttpEventType.Sent) {
+          if (event === HttpEventType.Sent) {
             // ...
           }
-          if (event.type === HttpEventType) {
-            console.log(event.body);
+          if (event === HttpEventType) {
+            console.log(event);
           }
         })
+      
       )
     }
 }
